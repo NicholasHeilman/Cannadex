@@ -1,0 +1,76 @@
+package com.e.cannadexv40.ui.strain
+
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import com.e.cannadexv40.databinding.StrainItemBinding
+import com.example.cannadex.data.model.Strain
+import com.example.cannadex.utils.ViewType
+import com.example.cannadex.utils.extensions.listen
+import com.example.cannadex.utils.extensions.loadUrl
+
+class StrainAdapter(
+    private val listener: (Strain) -> Unit
+) : RecyclerView.Adapter<StrainAdapter.StrainViewHolder>() {
+
+    private val strains: MutableList<Strain> = mutableListOf()
+    private val loader by lazy { Strain().apply { viewType = ViewType.LOADER } }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StrainViewHolder {
+        return StrainItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+            .let { StrainViewHolder(it).listen { position -> listener.invoke(strains[position]) } }
+        }
+
+
+
+    override fun getItemCount() = strains.size
+
+    override fun onBindViewHolder(holder: StrainViewHolder, position: Int) {
+        holder.loadStrain(strains[position])
+    }
+
+    override fun getItemViewType(position: Int) = when (strains[position].viewType) {
+        ViewType.LOADER -> ViewType.LOADER.ordinal
+        ViewType.ITEM -> ViewType.ITEM.ordinal
+    }
+
+    fun loadStrains(strains: List<Strain>) {
+        this.strains.apply {
+            addAll(strains)
+            notifyDataSetChanged()
+        }
+    }
+
+    fun addLoader() {
+        if (strains.isNotEmpty())
+            Handler(Looper.getMainLooper()).post {
+                strains.add(loader)
+                notifyItemInserted(strains.size - 1)
+            }
+    }
+
+    fun removeLoader() {
+        if (strains.contains(loader)) {
+            strains.remove(loader)
+            notifyItemRemoved(strains.size)
+        }
+    }
+
+    class StrainViewHolder(private val binding: ViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun loadStrain(strain: Strain) {
+            when (binding) {
+                is StrainItemBinding -> binding.apply {
+                    ivCannabis.loadUrl(strain.image)
+                    tvCannabisName.text = strain.name?.trim()
+                }
+            }
+        }
+    }
+}

@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.e.cannadexv40.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_edibleDetailFragment"
+            app:destination="@id/edibleDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_strainDetailFragment"
+            app:destination="@id/strainDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/strainDetailFragment"
+        android:name="com.e.cannadexv40.ui.strain.StrainDetailFragment"
+        android:label="StrainDetailFragment" />
+    <fragment
+        android:id="@+id/edibleDetailFragment"
+        android:name="com.e.cannadexv40.ui.edible.EdibleDetailFragment"
+        android:label="fragment_edible_detail"
+        tools:layout="@layout/fragment_edible_detail" />
 </navigation>

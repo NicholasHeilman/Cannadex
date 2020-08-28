@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.e.cannadexv40.ui.strain.StrainFragment
 
 class RecyclerViewLoadMoreScroll : RecyclerView.OnScrollListener {
 
@@ -22,7 +23,7 @@ class RecyclerViewLoadMoreScroll : RecyclerView.OnScrollListener {
         return isLoading
     }
 
-    fun setOnLoadMoreListener(mOnLoadMoreListener: OnLoadMoreListener) {
+    fun setOnLoadMoreListener(mOnLoadMoreListener: StrainFragment) {
         this.mOnLoadMoreListener = mOnLoadMoreListener
     }
 
